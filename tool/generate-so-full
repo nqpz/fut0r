@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+# Wrapper script for running './tool generate-c-futhark-wrapper' and then
+# building a frei0r.h-compatible shared object with Futhark code.
+
+set -e # Exit on first error.
+
+base="$(dirname "$0")"
+tool="$base"/tool
+test -f "$tool" || make -C "$base"
+
+input_so_path="$1"
+futhark_file="$2"
+output_so_path="$3"
+author_name="$4"
+
+work_dir="$(mktemp -d)"
+wrapper="$work_dir/wrapper.c"
+fut_base="$work_dir/fut"
+
+set -x
+"$tool" generate-c-futhark-wrapper "$input_so_path" "$author_name" > "$wrapper"
+futhark-opencl --library -o "$fut_base" "$futhark_file"
+
+gcc -I "$base/../frei0r" -I "$work_dir" -o "$output_so_path" "$work_dir/wrapper.c" "$work_dir/fut.c" -lOpenCL -lm -fPIC -shared
+
+rm -r "$work_dir"

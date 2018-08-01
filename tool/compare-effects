@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Wrapper script for running './tool compare-effects'.
+
+set -e # Exit on first error.
+
+base="$(dirname "$0")"
+tool="$base"/tool
+test -f "$tool" || make -C "$base"
+
+for core_path in "$@"; do # e.g. filter/colorize
+    core_base="$(basename "$core_path")"
+    so_path_frei0r="$base/../frei0r/src/$core_path/$core_base.so"
+    so_path_fut0r="$base/../build/$core_path.so"
+
+    set -x
+    "$tool" compare-effects "$so_path_frei0r" "$so_path_fut0r"
+    set +x
+done

@@ -1,0 +1,3 @@
+[submodule "frei0r"]
+	path = frei0r
+	url = git@github.com:dyne/frei0r.git

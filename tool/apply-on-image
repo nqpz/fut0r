@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Wrapper script for running './tool apply-on-image' on stdin non-PAM images and
+# outputting PNG.  Depends on imagemagick and feh.
+
+set -e # Exit on first error.
+
+base="$(dirname "$0")"
+tool="$base"/tool
+test -f "$tool" || make -C "$base"
+
+so_path="$1"
+image_path="$2"
+shift 2
+
+convert "$image_path" -alpha activate pam:- \
+    | "$tool" apply-on-image "$so_path" - - "$@" \
+    | convert - png:- \
+    | feh -

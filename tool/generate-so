@@ -1,0 +1,22 @@
+#!/bin/sh
+#
+# Wrapper script for './generate-so-full'.  Assumes that frei0r and fut0r have
+# similar directory structures.  Will save resulting shared object in 'build'
+# root directory.
+
+set -e # Exit on first error.
+
+base="$(dirname "$0")"
+
+core_path="$1" # e.g. filter/colorize
+
+core_base="$(basename "$core_path")"
+input_so_path="$base/../frei0r/src/$core_path/$core_base.so"
+futhark_file="$base/../lib/github.com/nqpz/fut0r/$core_path.fut"
+output_so_path="$base/../build/$core_path.so"
+author_name="$(cat "$futhark_file" | grep -- '-- Author:' | cut -d ' ' -f 3-)"
+
+mkdir -p "$(dirname "$output_so_path")"
+
+set -x
+"$base/generate-so-full" "$input_so_path" "$futhark_file" "$output_so_path" "$author_name"
