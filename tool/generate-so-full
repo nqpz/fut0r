@@ -22,6 +22,6 @@ set -x
 "$tool" generate-c-futhark-wrapper "$input_so_path" "$author_name" > "$wrapper"
 futhark-opencl --library -o "$fut_base" "$futhark_file"
 
-gcc -I "$base/../frei0r/include" -I "$work_dir" -o "$output_so_path" "$work_dir/wrapper.c" "$work_dir/fut.c" -lOpenCL -lm -fPIC -shared
+gcc -std=c99 -I "$base/../frei0r/include" -I "$work_dir" -o "$output_so_path" "$work_dir/wrapper.c" "$work_dir/fut.c" -lOpenCL -lm -fPIC -shared
 
 rm -r "$work_dir"
