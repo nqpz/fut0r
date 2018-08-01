@@ -1,0 +1,21 @@
+language: minimal
+
+sudo: false
+
+dist: trusty
+
+addons:
+  apt:
+    packages:
+    - cmake
+    - libgavl-dev
+    - libopencv-dev
+    - libcairo2-dev
+
+install:
+ - git submodule update --init
+ - (cd frei0r && cmake . && make)
+ - make
+
+script:
+ - make test

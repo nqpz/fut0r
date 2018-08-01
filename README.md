@@ -10,6 +10,8 @@
 
 *Port of frei0r to the Futhark programming language*
 
+[![Build Status](https://travis-ci.org/nqpz/fut0r.svg?branch=master)](https://travis-ci.org/nqpz/fut0r)
+
 # fut0r
 
 fut0r is a port of the [frei0r](https://frei0r.dyne.org/) effects
