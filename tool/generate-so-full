@@ -20,8 +20,15 @@ fut_base="$work_dir/fut"
 
 set -x
 "$tool" generate-c-futhark-wrapper "$input_so_path" "$author_name" > "$wrapper"
-futhark-opencl --library -o "$fut_base" "$futhark_file"
-
-gcc -std=c99 -I "$base/../frei0r/include" -I "$work_dir" -o "$output_so_path" "$work_dir/wrapper.c" "$work_dir/fut.c" -lOpenCL -lm -fPIC -shared
+if ! [ "$FUTHARK_COMPILER" ]; then
+    FUTHARK_COMPILER=futhark-opencl
+fi
+$FUTHARK_COMPILER --library -o "$fut_base" "$futhark_file"
+if [ "$FUTHARK_COMPILER" = futhark-opencl ]; then
+    lopencl=-lOpenCL
+else
+    lopencl=''
+fi
+gcc -std=c99 -I "$base/../frei0r/include" -I "$work_dir" -o "$output_so_path" "$work_dir/wrapper.c" "$work_dir/fut.c" $lopencl -lm -fPIC -shared
 
 rm -r "$work_dir"

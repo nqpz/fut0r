@@ -20,7 +20,7 @@ before_install:
   - git submodule update --init
 
 install:
-  - (cd frei0r && cmake . && make)
+  - (cd frei0r && cmake . && FUTHARK_COMPILER=futhark-c make)
   - make
 
 script:
