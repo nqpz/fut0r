@@ -14,7 +14,7 @@ all: tool $(BUILD_PATHS) futharkdoc
 tool: tool/tool
 
 tool/tool: $(TOOL_SOURCE_FILES)
-	gcc -Wall -Wextra -I frei0r -o tool/tool tool/src/tool.c tool/src/tbf.c tool/src/frei0r_dynamic.c tool/src/pam_image.c -ldl
+	gcc -Wall -Wextra -I frei0r/include -o tool/tool tool/src/tool.c tool/src/tbf.c tool/src/frei0r_dynamic.c tool/src/pam_image.c -ldl
 
 build/%.so: lib/github.com/nqpz/fut0r/%.fut
 	./tool/generate-so $(patsubst build/%.so,%,$@)
