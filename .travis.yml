@@ -9,7 +9,7 @@ addons:
     packages:
     - cmake
     - libgavl-dev
-    - libopencv-dev
+    - libopencv-core-dev
     - libcairo2-dev
 
 install:
